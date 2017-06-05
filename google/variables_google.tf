@@ -39,25 +39,21 @@ variable "ip_address" {
 }
 
 variable "ssh_public_key" {
-    type        = "string"
     default     = ""
     description = "Public key to be installed on the machine(s) (if any)"
 }
 
 variable "ssh_public_key_file" {
-    type        = "string"
     default     = ""
     description = "Public key file to be installed on the machine(s) (if any)"
 }
 
 variable "ssh_private_key" {
-    type        = "string"
     default     = ""
     description = "Private key used to connect the machine"
 }
 
 variable "ssh_private_key_file" {
-    type        = "string"
     default     = ""
     description = "Private key file used to connect the machine"
 }
