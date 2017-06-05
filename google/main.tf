@@ -12,7 +12,7 @@ resource "google_compute_instance" "default" {
         network = "${var.network}"
 
         access_config {
-            # Ephemeral
+            nat_ip = "${var.ip_address}"
         }
     }
 
@@ -49,4 +49,8 @@ resource "google_compute_instance" "default" {
             "${path.module}/../shared/scripts/${lookup(var._finish_script, var.platform)}",
         ]
     }
+}
+
+output "ip_address" {
+    value = "${google_compute_instance.default.network_interface.0.access_config.0.assigned_nat_ip}"
 }

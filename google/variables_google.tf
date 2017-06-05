@@ -33,6 +33,11 @@ variable "network" {
     description = "The VPC used for the instance"
 }
 
+variable "ip_address" {
+    default     = ""
+    description = "Static IP address (created manually)"
+}
+
 variable "ssh_public_key" {
     type        = "string"
     default     = ""
