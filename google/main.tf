@@ -26,9 +26,27 @@ resource "google_compute_instance" "default" {
         private_key = "${ trimspace(var.ssh_private_key != "" ? var.ssh_private_key : var.ssh_private_key_file != "" ? file(var.ssh_private_key_file == "" ? format("%s/%s", path.module, "files/dummy_private_key") : var.ssh_private_key_file) : "") }"
     }
 
+    provisioner "file" {
+        content     = "${ var.vault_config != "" ? var.vault_config : file(var.vault_config_file == "" ? "${path.module}/../shared/vault.hcl" : var.vault_config_file) }"
+        destination = "/tmp/vault.hcl"
+    }
+
+    provisioner "file" {
+        source      = "${path.module}/../shared/startup/${lookup(var._start_config, var.platform)}"
+        destination = "/tmp/${lookup(var._start_config, var.platform)}"
+    }
+
     provisioner "remote-exec" {
         inline = [
-            "echo Hello",
+            "echo ${var.vault_version} > /tmp/vault-version",
+        ]
+    }
+
+    provisioner "remote-exec" {
+        scripts = [
+            "${path.module}/../shared/scripts/${lookup(var._prepare_script, var.platform)}",
+            "${path.module}/../shared/scripts/install.sh",
+            "${path.module}/../shared/scripts/${lookup(var._finish_script, var.platform)}",
         ]
     }
 }
