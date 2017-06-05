@@ -38,6 +38,11 @@ variable "ip_address" {
     description = "Static IP address (created manually)"
 }
 
+variable "service_account" {
+    default     = ""
+    description = "Service account email"
+}
+
 variable "ssh_public_key" {
     default     = ""
     description = "Public key to be installed on the machine(s) (if any)"

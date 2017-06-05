@@ -20,6 +20,11 @@ resource "google_compute_instance" "default" {
         ssh-keys = "${ trimspace(var.ssh_public_key != "" ? "${lookup(var._users, var.platform)}:${var.ssh_public_key}" : var.ssh_public_key_file != "" ? "${lookup(var._users, var.platform)}:${file(var.ssh_public_key_file == "" ? "${path.module}/files/dummy_public_key" : var.ssh_public_key_file)}" : "") }"
     }
 
+    service_account {
+        email = "${var.service_account}"
+        scopes = []
+    }
+
     connection {
         type = "ssh"
         user = "${lookup(var._users, var.platform)}"
