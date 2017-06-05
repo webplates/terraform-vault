@@ -8,3 +8,4 @@
 # Local dev
 terraform.tfvars
 local.tf
+.terraform.tfstate.lock.info
