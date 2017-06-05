@@ -17,13 +17,13 @@ resource "google_compute_instance" "default" {
     }
 
     metadata {
-        ssh-keys = "${ trimspace(var.ssh_public_key != "" ? format("%s:%s", lookup(var._users, var.platform), var.ssh_public_key) : var.ssh_public_key_file != "" ? format("%s:%s", lookup(var._users, var.platform), file(var.ssh_public_key_file == "" ? format("%s/%s", path.module, "files/dummy_public_key") : var.ssh_public_key_file)) : "") }"
+        ssh-keys = "${ trimspace(var.ssh_public_key != "" ? "${lookup(var._users, var.platform)}:${var.ssh_public_key}" : var.ssh_public_key_file != "" ? "${lookup(var._users, var.platform)}:${file(var.ssh_public_key_file == "" ? "${path.module}/files/dummy_public_key" : var.ssh_public_key_file)}" : "") }"
     }
 
     connection {
         type = "ssh"
         user = "${lookup(var._users, var.platform)}"
-        private_key = "${ trimspace(var.ssh_private_key != "" ? var.ssh_private_key : var.ssh_private_key_file != "" ? file(var.ssh_private_key_file == "" ? format("%s/%s", path.module, "files/dummy_private_key") : var.ssh_private_key_file) : "") }"
+        private_key = "${ trimspace(var.ssh_private_key != "" ? var.ssh_private_key : var.ssh_private_key_file != "" ? file(var.ssh_private_key_file == "" ? "${path.module}/files/dummy_private_key" : var.ssh_private_key_file) : "") }"
     }
 
     provisioner "file" {
